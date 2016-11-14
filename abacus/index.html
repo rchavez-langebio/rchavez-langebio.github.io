@@ -1,12 +1,189 @@
-<h1>Submitting jobs to ABACUS</h1>
-<p><a href="http://www.abacus.cinvestav.mx/">ABACUS</a> uses the Simple Linux Utility for Resource Management, aka <strong>slurm</strong>. Information on slurm options can be obtained at http://slurm.schedmd.com/sbatch.html</p>
-<h4>CPU nodes:</h4>
-<p>The ABACUS supercomputer has 268 CPU nodes and each node has 2 <a href="http://ark.intel.com/products/81059/Intel-Xeon-Processor-E5-2697-v3-35M-Cache-2_60-GHz">Intel Xeon E5-2697V3 @ 2.60 GHz CPUs</a>. Each processor has 14 cores and 28 threads. This means that for each node you can request up to 56 (2 x 28) tasks (threads): In slurm this is: <code>-N [1..268]</code> or <code>--nodes=[1..268]</code> and <code>-n [1..56]</code> or <code>--ntasks=[1..56]</code></p>
-<h4>CPU time:</h4>
-<p>Abacus has a strict policy regarding CPU usage, and therefore it is imperative that requested CPU time is accurate. In slurm time is requested: For jobs lasting up to 24 hours: <code>-t HH:MM:SS</code> or <code>--time=HH:MM:SS</code> For jobs lasting more than 24 hours: <code>-t DD-HH:MM:SS</code> or <code>--time=DD-HH:MM:SS</code></p>
-<h4>Partitions (queues):</h4>
-<p>The number of hours or days requested will determine the partition (queue) to be used. Abacus has 3 CPU partitions: <strong>1-28cpu-1d</strong> (jobs lasting up to 24 hours), <strong>1-28cpu-7d</strong> (jobs lasting up to 7 days) and <strong>1-28cpu-30d</strong> (jobs lasting up to 1 month), which are requested using: <code>-p partition_name</code> or <code>--partition=partition_name</code></p>
-<p>You should also indicate the name of your job, preferably the name of the program used: <code>-J jobname</code> or <code>--job-name=jobname</code></p>
-<p>And standard output and standard error can be directed using: <code>-e error_filename</code> or <code>--error=error_filename</code> <code>-o output_filename</code> or <code>--output=output_filename</code></p>
-<h4>Examples:</h4>
-<p>A slurm script header for a blastn job that requests 1 node, 20 threads and 1 hour of CPU time should therefore look like this: <code>bash #SBATCH -N 1 #SBATCH -n 20 #SBATCH -p 1-28cpu-1d #SBATCH -t 01:00:00 #SBATCH -J blastn #SBATCH -e blastn.err #SBATCH -o blastn.out</code> or in long form option: <code>bash #SBATCH --nodes=1 #SBATCH --ntasks=20 #SBATCH --partition=1cpu1-28 #SBATCH --time=01:00:00 #SBATCH --job-name=blastn #SBATCH --error=blastn.err #SBATCH --output=blastn.out</code> A slurm script header for a blastn job that requests 10 nodes, 56 threads per node and 6 days should look like this: <code>bash #SBATCH -N 10 #SBATCH -n 56 #SBATCH -p 1-28cpu-7d #SBATCH -t 06-00:00:00 #SBATCH -J blastn #SBATCH -e blastn.err #SBATCH -o blastn.out</code></p>
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Made with Remarkable!
+  </title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <style type="text/css">
+   body,table tr{background-color:#fff}table tr td,table tr th{border:1px solid #ccc;text-align:left;padding:6px 13px;margin:0}pre code,table,table tr{padding:0}hr,pre code{background:0 0}body{font:16px Helvetica,Arial,sans-serif;line-height:1.4;color:#333;word-wrap:break-word;padding:10px 15px}strong,table tr th{font-weight:700}h1{font-size:2em;margin:.67em 0;text-align:center}h2{font-size:1.75em}h3{font-size:1.5em}h4{font-size:1.25em}h1,h2,h3,h4,h5,h6{font-weight:700;position:relative;margin-top:15px;margin-bottom:15px;line-height:1.1}h1,h2{border-bottom:1px solid #eee}hr{height:0;margin:15px 0;overflow:hidden;border:0;border-bottom:1px solid #ddd}a{color:#4183C4}a.absent{color:#c00}ol,ul{padding-left:15px;margin-left:5px}ol{list-style-type:lower-roman}table tr{border-top:1px solid #ccc;margin:0}table tr:nth-child(2n){background-color:#aaa}table tr td :first-child,table tr th :first-child{margin-top:0}table tr td:last-child,table tr th :last-child{margin-bottom:0}img{max-width:100%}blockquote{padding:0 15px;border-left:4px solid #ccc}code,tt{margin:0 2px;padding:0 5px;white-space:nowrap;border:1px solid #eaeaea;background-color:#f8f8f8;border-radius:3px}pre code{margin:0;white-space:pre;border:none}.highlight pre,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:6px 10px;border-radius:3px}
+  </style>
+ </head>
+ <body>
+  <h1 id="submitting-jobs-to-abacus">
+   Submitting jobs to ABACUS
+  </h1>
+  <p>
+   <a href="http://www.abacus.cinvestav.mx/">
+    ABACUS
+   </a>
+   uses the Simple Linux Utility for Resource Management, aka
+   <strong>
+    slurm
+   </strong>
+   . Information on slurm options can be obtained at
+   <a href="http://slurm.schedmd.com/sbatch.html">
+    http://slurm.schedmd.com/sbatch.html
+   </a>
+  </p>
+  <h4 id="cpu-nodes">
+   CPU nodes:
+  </h4>
+  <p>
+   The ABACUS supercomputer has 268 CPU nodes and each node has 2
+   <a href="http://ark.intel.com/products/81059/Intel-Xeon-Processor-E5-2697-v3-35M-Cache-2_60-GHz">
+    Intel Xeon E5-2697V3 @ 2.60 GHz CPUs
+   </a>
+   . Each processor has 14 cores and 28 threads. This means that for each node you can request up to 56 (2 x 28) tasks (threads):
+   <br/>
+   In slurm this is:
+   <br/>
+   <code>
+    -N [1..268]
+   </code>
+   or
+   <code>
+    --nodes=[1..268]
+   </code>
+   <br/>
+   and
+   <br/>
+   <code>
+    -n [1..56]
+   </code>
+   or
+   <code>
+    --ntasks=[1..56]
+   </code>
+  </p>
+  <h4 id="cpu-time">
+   CPU time:
+  </h4>
+  <p>
+   Abacus has a strict policy regarding CPU usage, and therefore it is imperative that requested CPU time is accurate. In slurm time is requested:
+   <br/>
+   For jobs lasting up to 24 hours:
+   <br/>
+   <code>
+    -t HH:MM:SS
+   </code>
+   or
+   <code>
+    --time=HH:MM:SS
+   </code>
+   <br/>
+   For jobs lasting more than 24 hours:
+   <br/>
+   <code>
+    -t DD-HH:MM:SS
+   </code>
+   or
+   <code>
+    --time=DD-HH:MM:SS
+   </code>
+  </p>
+  <h4 id="partitions-queues">
+   Partitions (queues):
+  </h4>
+  <p>
+   The number of hours or days requested will determine the partition (queue) to be used. Abacus has 3 CPU partitions:
+   <strong>
+    1-28cpu-1d
+   </strong>
+   (jobs lasting up to 24 hours),
+   <strong>
+    1-28cpu-7d
+   </strong>
+   (jobs lasting up to 7 days) and
+   <strong>
+    1-28cpu-30d
+   </strong>
+   (jobs lasting up to 1 month), which are requested using:
+   <br/>
+   <code>
+    -p partition_name
+   </code>
+   or
+   <code>
+    --partition=partition_name
+   </code>
+  </p>
+  <p>
+   You should also indicate the name of your job, preferably the name of the program used:
+   <br/>
+   <code>
+    -J jobname
+   </code>
+   or
+   <code>
+    --job-name=jobname
+   </code>
+  </p>
+  <p>
+   And standard output and standard error can be directed using:
+   <br/>
+   <code>
+    -e error_filename
+   </code>
+   or
+   <code>
+    --error=error_filename
+   </code>
+   <br/>
+   <code>
+    -o output_filename
+   </code>
+   or
+   <code>
+    --output=output_filename
+   </code>
+  </p>
+  <h4 id="examples">
+   Examples:
+  </h4>
+  <p>
+   A slurm script header for a blastn job that requests 1 node, 20 threads and 1 hour of CPU time should therefore look like this:
+  </p>
+  <pre><code class="bash">#SBATCH -N 1
+#SBATCH -n 20
+#SBATCH -p 1-28cpu-1d
+#SBATCH -t 01:00:00
+#SBATCH -J blastn
+#SBATCH -e blastn.err
+#SBATCH -o blastn.out
+</code></pre>
+  <p>
+   or in long form option:
+  </p>
+  <pre><code class="bash">#SBATCH --nodes=1
+#SBATCH --ntasks=20
+#SBATCH --partition=1cpu1-28
+#SBATCH --time=01:00:00
+#SBATCH --job-name=blastn
+#SBATCH --error=blastn.err
+#SBATCH --output=blastn.out
+</code></pre>
+  <p>
+   A slurm script header for a blastn job that requests 10 nodes, 56 threads per node and 6 days should look like this:
+  </p>
+  <pre><code class="bash">#SBATCH -N 10
+#SBATCH -n 56
+#SBATCH -p 1-28cpu-7d
+#SBATCH -t 06-00:00:00
+#SBATCH -J blastn
+#SBATCH -e blastn.err
+#SBATCH -o blastn.out
+</code></pre>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>
