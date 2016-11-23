@@ -670,7 +670,11 @@ tblastn -num_threads $PBS_NUM_PPN -evalue 0.1 -db maize_cdna -query seqs.fasta -
    samtools sort
   </h3>
   <p>
-   Samtools sort can use multiple threads with the -@ parameter. The following script requests the default queue, 1 node, 8 cores and 30 minutes. Because our input bam file is quite large, we will request a relatively large amount (24 Gb) of memory:
+   Samtools sort can use multiple threads with the
+   <code>
+    -@
+   </code>
+   option. The following script requests the default queue, 1 node, 8 cores and 30 minutes. Because our input bam file is quite large, we will request a relatively large amount (24 Gb) of memory:
   </p>
   <pre><code class="bash">#PBS -q default
 #PBS -l nodes=1:ppn=8,walltime=00:30:00,mem=24gb,vmem=24gb
@@ -705,7 +709,7 @@ samtools sort -@ $PBS_NUM_PPN -T temp -o B73xPT_sorted.bam B73xPT.bam
    <strong>
     does not use multiple threads
    </strong>
-   , there is no point in requesting more than one node and one core. On the other hand, it requires some time to run:
+   , there is no point in requesting more than one node and one core:
   </p>
   <pre><code class="bash">#PBS -q default
 #PBS -l nodes=1:ppn=1,walltime=02:00:00,mem=4gb,vmem=4gb
