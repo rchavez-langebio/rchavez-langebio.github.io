@@ -14,9 +14,9 @@
   <h1 id="guia-hpc-mazorka">
    Guía HPC mazorka
   </h1>
-  <h3 id="index">
+  <h2 id="index">
    Index
-  </h3>
+  </h2>
   <ul>
    <li>
     What is mazorka?
@@ -37,64 +37,75 @@
       bowtie2
      </li>
      <li>
-      R (parallel foreach)
+      R (foreach with %dopar%)
      </li>
     </ul>
    </li>
   </ul>
   <hr/>
-  <h3 id="what-is-mazorka">
+  <h2 id="what-is-mazorka">
    What is mazorka?
-  </h3>
+  </h2>
   <p>
    <strong>
     mazorka
    </strong>
-   is the high performance computing (HPC) cluster at Langebio.
+   is the high-performance computing (HPC) cluster at Langebio.
   </p>
-  <h4 id="mazorka-is">
-   mazorka is:
-  </h4>
+  <hr/>
+  <h2 id="background">
+   Background
+  </h2>
+  <p>
+   <strong>
+    mazorka
+   </strong>
+   was first installed in 2002 and had 10 computing nodes, one master node and 2 Tb of storage. Since then, demand for processing power lead to its incremental growth, and in 2012 mazorka had 41 computing nodes, one dedicated storage node with 20 Tb of disk space. That same year were added two nodes with 256 Gb RAM, and 25 Tb of storage space for genome assembly. In 2016 mazorka received a major overhaul, with older nodes being replaced, high-bandwidth connectivity and an UPS with increased capacity.
+  </p>
+  <p>
+   Today
+   <strong>
+    mazorka
+   </strong>
+   is:
+  </p>
   <ul>
    <li>
-    1 Master node
+    1 master node
     <ul>
      <li>
       2 Intel(R) Xeon(R)
       <a href="http://ark.intel.com/products/81705/Intel-Xeon-Processor-E5-2650-v3-25M-Cache-2_30-GHz">
        E5-2650v3
       </a>
-      processors (10 cores and 20 threads per processor = 40 threads per node)
+      processors (10 cores per processor, 20 cores per node)
      </li>
      <li>
-      128 GB (8 x 16GB) DDR4-2133 2Rx4 LP ECC REG RoHs
+      128 Gb RAM (8 x 16 Gb)
      </li>
      <li>
-      5 SSDs 100GB SATA 3.0 RAID 5
+      500 Gb SSD (5 x 100 Gb SATA 3.0 RAID 5)
      </li>
      <li>
-      2-port Gigabit standard LP NIC card
-     </li>
-     <li>
-      Infiniband FDR-10
+      Infiniband FDR-10 and Ethernet connectivity
      </li>
     </ul>
    </li>
    <li>
-    16 Nodes
+    16 nodes (node1 - node16) with 20 cores and 64 Gb RAM:
     <ul>
      <li>
       2 Intel(R) Xeon(R)
       <a href="http://ark.intel.com/products/81705/Intel-Xeon-Processor-E5-2650-v3-25M-Cache-2_30-GHz">
        E5-2650v3
       </a>
-      processors (10 cores and 20 threads per processor  = 40 threads per node)
+      processors (10 cores per processor, 20 cores per node)
      </li>
      <li>
-      64 GB (8 x 8GB) DDR4-2133 1Rx4 LP ECC REG RoHs
+      64 Gb RAM (8 x 8 Gb)
      </li>
      <li>
-      1 Hard drive 1.0TB SATA 6 GB/s 7.2K RPM 128M 3.5”
+      1  Tb hard drive (SATA 6 Gb/s 7.2K RPM 128M 3.5”)
      </li>
      <li>
       Infiniband FDR-10
@@ -102,41 +113,20 @@
     </ul>
    </li>
    <li>
-    5 high memory nodes
+    5 very high memory nodes (node17 - node21)  with 20 cores and 768 Gb RAM:
     <ul>
      <li>
       2 Intel(R) Xeon(R)
       <a href="http://ark.intel.com/products/81705/Intel-Xeon-Processor-E5-2650-v3-25M-Cache-2_30-GHz">
        E5-2650v3
       </a>
-      processors (10 cores and 20 threads per processor = 40 threads per node)
+      processors (10 cores per processor, 20 cores per node)
      </li>
      <li>
-      768 GB (24 x 32GB) DDR4-2133 4Rx4 LP ECC LRDIMM (38.4 GB per thread)
+      768 Gb RAM (24 x 32 Gb)
      </li>
      <li>
-      1 Hard drive 4TB SATA 6Gb/s 7.2K RPM 128M 3.5”
-     </li>
-     <li>
-      Infiniband FDR-10
-     </li>
-    </ul>
-   </li>
-   <li>
-    2 Nodes
-    <ul>
-     <li>
-      4 Intel(R) Xeon(R)
-      <a href="http://ark.intel.com/products/75246/Intel-Xeon-Processor-E7-4820-v2-16M-Cache-2_00-GHz">
-       E7-4820v2
-      </a>
-      processors (8 cores and 16 threads per processor = 64 threads per node)
-     </li>
-     <li>
-      252 GB RAM
-     </li>
-     <li>
-      1 Hard drive 1 TB
+      4 Tb hard drive (SATA 6Gb/s 7.2K RPM 128M 3.5”)
      </li>
      <li>
       Infiniband FDR-10
@@ -144,30 +134,146 @@
     </ul>
    </li>
    <li>
-    21 nodes
+    13 nodes (node24-25, 32, 34, 37-41, 43, 45-47) with 8 cores and 24 Gb RAM:
     <ul>
      <li>
       2 Intel(R) Xeon(R)
       <a href="http://ark.intel.com/products/37103/Intel-Xeon-Processor-E5530-8M-Cache-2_40-GHz-5_86-GTs-Intel-QPI">
        E5530
       </a>
-      processors (4 cores and 8 threads per processor = 16 threads per node)
+      processors (4 cores per processor, 8 cores per node)
      </li>
      <li>
-      20 GB to 64 GB RAM
+      24 Gb RAM
      </li>
      <li>
       Ethernet
      </li>
     </ul>
    </li>
+   <li>
+    4 nodes (node22, 23, 27, 29) with 8 cores and 48 Gb RAM:
+    <ul>
+     <li>
+      2 Intel(R) Xeon(R)
+      <a href="http://ark.intel.com/products/37103/Intel-Xeon-Processor-E5530-8M-Cache-2_40-GHz-5_86-GTs-Intel-QPI">
+       E5530
+      </a>
+      processors (4 cores per processor, 8 cores per node)
+     </li>
+     <li>
+      48 Gb RAM
+     </li>
+     <li>
+      Ethernet
+     </li>
+    </ul>
+   </li>
+   <li>
+    4 nodes (node26, 28, 30, 31) with 8 cores and 64 Gb RAM:
+    <ul>
+     <li>
+      2 Intel(R) Xeon(R)
+      <a href="http://ark.intel.com/products/37103/Intel-Xeon-Processor-E5530-8M-Cache-2_40-GHz-5_86-GTs-Intel-QPI">
+       E5530
+      </a>
+      processors (4 cores per processor, 8 cores per node)
+     </li>
+     <li>
+      64 Gb RAM
+     </li>
+     <li>
+      Ethernet
+     </li>
+    </ul>
+   </li>
+   <li>
+    2 high memory nodes (node48-49)  with 32 cores and 252 Gb RAM:
+    <ul>
+     <li>
+      4 Intel(R) Xeon(R)
+      <a href="http://ark.intel.com/products/75246/Intel-Xeon-Processor-E7-4820-v2-16M-Cache-2_00-GHz">
+       E7-4820v2
+      </a>
+      processors (8 cores per processor, 32 cores per node)
+     </li>
+     <li>
+      252 Gb RAM
+     </li>
+     <li>
+      1 Tb hard drive
+     </li>
+     <li>
+      Infiniband FDR-10
+     </li>
+    </ul>
+   </li>
+   <li>
+    175 Tb of storage space
+   </li>
   </ul>
   <hr/>
-  <h3 id="submitting-jobs-to-mazorka">
-   Submitting jobs to mazorka
-  </h3>
+  <h2 id="access-to-mazorka">
+   Access to mazorka
+  </h2>
   <p>
-   mazorka uses the Portable Batch System (PBS) job scheduler. More info on PBS options can be found
+   Araceli Fernández is mazorka’s admin. To request an account write to araceli.fernandez_at_cinvestav.mx (and cc Dr. Cei Abreu, cei.abreu_at_cinvestav.mx).
+  </p>
+  <p>
+   You can connect to mazorka from within Langebio via ssh at 10.10.10.240. For example, the user “araceli” would connect to mazorka with
+   <code>
+    ssh araceli@10.10.10.240
+   </code>
+   <code>
+    ssh -l araceli 10.10.10.240
+   </code>
+   or, if the username in her local machine is “araceli”, simply
+   <code>
+    ssh 10.10.10.240
+   </code>
+   .
+  </p>
+  <p>
+   Ask Araceli Fernández if you need to connect from outside Langebio.
+  </p>
+  <h2 id="directories">
+   Directories
+  </h2>
+  <p>
+   Each mazorka user has a
+   <code>
+    /home/username/
+   </code>
+   directory, located in the master node. These directories have a 1 Gb quota, which is enough disk space for a few scripts, small configuration files, some software etc. Large files (such as genomes, fastq files etc.) should be placed in the
+   <a href="https://en.wikipedia.org/wiki/Lustre_(file_system)">
+    LUSTRE distributed file system
+   </a>
+   . Each user has a LUSTRE directory at
+   <code>
+    /LUSTRE/usuario/username/
+   </code>
+   .
+   <br/>
+   To copy data to your LUSTRE directory you can use scp or rsync. For example, in order to copy your local folder “data” to your LUSTRE folder “awesome_project” using rsync, the command line would be:
+   <br/>
+   <code>
+    rsync -av ./data/ username@10.10.10.240:/LUSTRE/usuario/username/awesome_project/
+   </code>
+   or, if your local username and mazorka username are identical, simply
+   <code>
+    rsync -av ./data/ 10.10.10.240:/LUSTRE/usuario/username/awesome_project/
+   </code>
+  </p>
+  <hr/>
+  <h2 id="submitting-jobs-to-mazorka">
+   Submitting jobs to mazorka
+  </h2>
+  <p>
+   Running programs in mazorka is done through job scheduling.
+   <strong>
+    mazorka
+   </strong>
+   uses the Portable Batch System (PBS) job scheduler. More information on the usage of PBS can be found
    <a href="https://www.nas.nasa.gov/hecc/support/kb/commonly-used-qsub-options-in-pbs-scripts-or-in-the-qsub-command-line_175.html">
     here
    </a>
@@ -175,13 +281,38 @@
    <a href="https://wiki.hpcc.msu.edu/display/hpccdocs/Advanced+Scripting+Using+PBS+Environment+Variables">
     here
    </a>
-   .
+   . Running a job involves preparing a script that will contain:
+  </p>
+  <ul>
+   <li>
+    a header
+   </li>
+   <li>
+    one (or more) module(s) (program(s)) to be loaded
+   </li>
+   <li>
+    one (or more) command line(s)
+   </li>
+  </ul>
+  <h3 id="headers">
+   Headers
+  </h3>
+  <p>
+   PBS headers start with
+   <code>
+    #PBS
+   </code>
+   . They provide information to mazorka about your job, and in particular, the
+   <strong>
+    resources
+   </strong>
+   you want in order to run said job: which queue, how many nodes and cores, how much RAM and how much time your job will need.
   </p>
   <h4 id="queues">
    Queues
   </h4>
   <p>
-   mazorka has two queues,
+   Jobs are not directly run, as in your laptop, but are asigned to queues. mazorka has two queues:
    <strong>
     default
    </strong>
@@ -197,32 +328,139 @@
    <code>
     #PBS -q ensam
    </code>
-   .
+   . All nodes belong to the
+   <strong>
+    default
+   </strong>
+   queue. The
+   <strong>
+    ensam
+   </strong>
+   queue only includes the high memory nodes:
   </p>
-  <h4 id="resources">
-   Resources
+  <table>
+   <thead>
+    <tr>
+     <th>
+      Queue
+     </th>
+     <th>
+      Nodes
+     </th>
+     <th>
+      Cores
+     </th>
+     <th>
+      Type of job
+     </th>
+    </tr>
+   </thead>
+   <tbody>
+    <tr>
+     <td>
+      default
+     </td>
+     <td>
+      all (45)
+     </td>
+     <td>
+      652 (max. 32 per node)
+     </td>
+     <td>
+      Any job
+     </td>
+    </tr>
+    <tr>
+     <td>
+      ensam
+     </td>
+     <td>
+      7
+     </td>
+     <td>
+      164 (max. 32 per node)
+     </td>
+     <td>
+      Jobs that require more than 64 Gb of RAM (usually genome assembly)
+     </td>
+    </tr>
+   </tbody>
+  </table>
+  <h4 id="nodes-and-cores">
+   Nodes and cores
   </h4>
   <p>
-   Resources (nodes, processors, memory and time) are requested with the header
+   <strong>
+    mazorka
+   </strong>
+   nodes do not have hyperthreading enabled. Therefore, the number of cores is the number of parallel processes that can be run. Nodes and cores per node are requested with:
+   <br/>
    <code>
-    #PBS -l
+    #PBS -l nodes=num_nodes:ppn=num_cores_per_node
    </code>
+  </p>
+  <p>
+   <strong>
+    Important note:
+   </strong>
+   unless your program was specifically designed to run on multiple nodes, usually through the use of an MPI implementation,
+   <strong>
+    only one node should be requested
+   </strong>
+   , and as mazorka nodes have a maximum of 32 cores per node,
+   <strong>
+    a job should request a maximum of 32 cores
+   </strong>
    :
-   <br/>
-   - Nodes and processors per node are requested with:
    <code>
-    #PBS -l nodes=num_nodos:ppn=num_proc_por_nodo
+    #PBS -l nodes=1:ppn=[1..32]
    </code>
-   <br/>
-   - Memory is requested with:
+   .
+  </p>
+  <h4 id="ram">
+   RAM
+  </h4>
+  <p>
+   The amount of RAM is requested with:
    <code>
     #PBS -l mem=memory:vmem=memory
    </code>
-   <br/>
-   - Time is requested with
+   where
+   <code>
+    memory
+   </code>
+   is the number of Mb (for example
+   <code>
+    500mb
+   </code>
+   ) or Gb (for example
+   <code>
+    16gb
+   </code>
+   ) your program(s) will need.
+  </p>
+  <h4 id="time">
+   Time
+  </h4>
+  <p>
+   Time is requested with
    <code>
     #PBS -l walltime=HH:MM:SS
    </code>
+  </p>
+  <hr/>
+  <h3 id="optional-but-recommended-headers">
+   Optional (but recommended) headers
+  </h3>
+  <h4 id="environment-variables">
+   Environment variables
+  </h4>
+  <p>
+   You should export all environment variables to your job using
+   <code>
+    #PBS -V
+   </code>
+   .
   </p>
   <h4 id="job-name">
    Job name
@@ -234,16 +472,6 @@
    </code>
    .
   </p>
-  <h4 id="environment-variables">
-   Environment variables
-  </h4>
-  <p>
-   You should export all environment variables to your job using
-   <code>
-    #PBS -V
-   </code>
-   .
-  </p>
   <h4 id="redirecting-standard-output-and-standard-error">
    Redirecting standard output and standard error
   </h4>
@@ -252,7 +480,7 @@
    <em>
     job_id
    </em>
-   and a file for stadard error named job_name.e
+   , and a file for stadard error named job_name.e
    <em>
     job_id
    </em>
@@ -267,27 +495,250 @@
    .
   </p>
   <hr/>
-  <h3 id="examples">
-   Examples
+  <h3 id="modules-programs">
+   Modules (programs)
   </h3>
-  <h4 id="blast">
-   blast
-  </h4>
-  <h4 id="bowtie2">
-   bowtie2
-  </h4>
-  <hr/>
   <p>
    <strong>
-    Ricardo A. Chávez Montes
+    mazorka
    </strong>
-   <br/>
-   Enlace Langebio-Abacus
-   <br/>
-   aaron.chavez_at_cinvestav.mx
-   <br/>
-   Last modified: Mon Nov 14th, 2016
+   uses the
+   <a href="http://modules.sourceforge.net/">
+    Environment Modules
+   </a>
+   system, which allows to have different versions of a same program. The
+   <code>
+    module avail
+   </code>
+   command in mazorka outputs the list of currently available modules, which are (as of November 2016):
   </p>
+  <pre><code>------------------------------------------------------------ /data/Modules -------------------------------------------------------------
+ABCtoolbox/2.0     circos/0.69-2      GBSX/1.2           lastz/1.02         paml/4.9           RSEM/1.3.0         tRNAscan/1.3.1
+abyss/1.9.0        cope/1.1.2         geneid/1.4         MACS/1.4.2         phylip/3.696       samtools/1.3.1     usearch/5.2.236
+adapterremoval/v2  corset/1.06        gmap/2016          mafft/7.305b       phylocom/4.2       seqimp/13-354      usearch/6.1.544
+ANGSD/0.912        CrossMap/0.2.5     hapQTL/0.99        maker/2.31         PhyML/3.1          SignalP/4.1        usearch/7.0.1090
+aracNE/2016        cufflinks/2.2.1    hisat2/2.0.4       mapDamage/2.0.6    picard/2.4.1       SnpEff/4.0e        usearch/8.1.1861
+augustus/2.5.5     cutadapt/1.9.1     hmmer/3.1b1        mapreads/2.4.1     plink/1.9          SPAdes/3.8.1       vcftools/0.1.13
+bcftools/1.2       discovar/52488     hmmer/3.1b2        mb/3.2.3           prank/150803       STAR/2.5.2a        velvet/1.2.10
+bcftools/1.3.1     EMBOSS/6.6.0       Honey/14.1.15      mcl/12-068         pullseq/1.0.2      strauto/1.0        Vienna/2.2.5
+bedtools2/2.25.0   ete3/3.0.0b35      HTSeq/0.6.1        miRDeep2/2.0.0.8   pyrad/3.0.6        structure/2.3.4    vsearch/1.11.1
+bgc/1.03           exonerate/2.2.0    hyphy/2.220        mpirun/3.2         qiime/1.9.1        tabix/0.2.6        wgs/8.2
+bowtie/1.1.0       express/1.5.1      infernal/1.1.1     msABC/20.12        R/3.2.5            tmhmm/2.0c         wise/2.4.1
+bowtie2/2.2.3      FastOrtho/29.2012  java/1.8           muscle/3.8.31      R/3.3.0            TransDecoder/3.0.0
+bowtie2/2.2.9      FastQC/0.11.2      jellyfish/1.1.11   ncbi-blast/2.2.26  randfold/2.0       treemix/1.12
+bwa/0.5.10         FLASH/1.2.11       Kalign/2.04        ncbi-blast+/2.2.31 raxml/8.2.9        trimAl/1.2rev59
+bwa/0.7.12         FrameD/230207      kallisto/0.43.0    orthologid/1.0.8   RECON/1.07         Trimmomatic/0.32
+cd-hit/4.6         GATK/3.5.0         kraken/0.10.6      orthomcl/2.0.9     RepeatMasker/4.0   trinity/2.1.1
+cegma/2.5          Gblocks/0.91b      kraken/13-274      paleomix/1.2.5     rnammer/1.2        Trinotate/2.0.2
+</code></pre>
+  <p>
+   Requests for the installation of programs should be directed to Araceli Fernández (araceli.fernandez_at_cinvestav.mx)
+  </p>
+  <h3 id="launching-a-job">
+   Launching a job
+  </h3>
+  <p>
+   Once the PBS script is ready, the job is launched with the
+   <code>
+    qsub
+   </code>
+   command. For example, the script named “myscript.sh” is launched with the command
+   <code>
+    qsub myscript.sh
+   </code>
+   .
+  </p>
+  <h3 id="monitoring-job">
+   Monitoring job
+  </h3>
+  <p>
+   You can view the status of your jobs using
+   <code>
+    qstat
+   </code>
+   , which will output all jobs currently queued, or
+   <code>
+    qstat -u username
+   </code>
+   , which will output the jobs belonging to
+   <code>
+    username
+   </code>
+   .
+  </p>
+  <h3 id="deleting-a-job">
+   Deleting a job
+  </h3>
+  <p>
+   If for some reason a job needs to be cancelled, the
+   <code>
+    qdel
+   </code>
+   command can be used with
+   <code>
+    qdel job_id
+   </code>
+   .
+   <em>
+    job_id
+   </em>
+   is the id from the qstat command output. Job ids in mazorka are in the form
+   <code>
+    number.mazorka
+   </code>
+   .
+  </p>
+  <hr/>
+  <h2 id="pbs-script-examples">
+   PBS script examples
+  </h2>
+  <h3 id="bowtie2">
+   bowtie2
+  </h3>
+  <p>
+   bowtie2 can run using multiple threads with the
+   <code>
+    -p
+   </code>
+   option. In this example, our bowtie2 job requests the default queue, 1 node, 20 cores, 1 hour of cluster time and 4 Gb of memory. Our job’s name will be
+   <code>
+    bowtie2
+   </code>
+   , we import all environment variables, and we ask to redirect standard output and standard error to
+   <code>
+    bowtie2_run.out
+   </code>
+   and
+   <code>
+    bowtie2_run.err
+   </code>
+   :
+  </p>
+  <pre><code class="bash">#PBS -q default
+#PBS -l nodes=1:ppn=20,walltime=01:00:00,mem=4gb,vmem=4gb
+#PBS -N bowtie2
+#PBS -V
+#PBS -o bowtie2_run.out
+#PBS -e bowtie2_run.err
+cd $PBS_O_WORKDIR
+module load bowtie2/2.2.9
+bowtie2 -a -I 100 -X 600 --rdg 6,5 --rfg 6,5 --score-min L,-.6,-.4 --no-discordant --no-mixed -p $PBS_NUM_PPN -x ../index_bowtie2/F1_ref -1 ../fastq/B73xPT_forward_paired.fq.gz -2 ../fastq/B73xPT_reverse_paired.fq.gz -S F1_bowtie2.sam
+</code></pre>
+  <p>
+   Note:
+  </p>
+  <ul>
+   <li>
+    the relative paths, thus avoiding the use of absolute paths.
+   </li>
+   <li>
+    the
+    <code>
+     $PBS_O_WORKDIR
+    </code>
+    variable. this variable means “the directory from which the script was qsubed”.
+   </li>
+   <li>
+    the
+    <code>
+     $PBS_NUM_PPN
+    </code>
+    variable, which is equal to the number of cores requested. In this example
+    <code>
+     $PBS_NUM_PPN
+    </code>
+    equals 20, from
+    <code>
+     ppn=20
+    </code>
+    .
+   </li>
+  </ul>
+  <h3 id="blast">
+   blast
+  </h3>
+  <p>
+   In this example we will tblastn (from the blast+ suite) our
+   <code>
+    seqs.fasta
+   </code>
+   file versus our
+   <code>
+    maize_cdna
+   </code>
+   database. The script will request 1 node, 16 cores, 3 Gb of RAM and 48 hours:
+  </p>
+  <pre><code class="bash">#PBS -N tblastn
+#PBS -q default
+#PBS -l nodes=1:ppn=16,mem=3gb,vmem=3gb,walltime=48:00:00
+#PBS -V
+module load ncbi-blast+/2.2.31
+cd $PBS_O_WORKDIR
+tblastn -num_threads $PBS_NUM_PPN -evalue 0.1 -db maize_cdna -query seqs.fasta -out seqs_blast.txt -outfmt "6 qseqid sseqid sstart send evalue"
+</code></pre>
+  <p>
+   Note that the order of the PBS headers is not important. Here
+   <code>
+    $PBS_NUM_PPN
+   </code>
+   is 16, from
+   <code>
+    ppn=16
+   </code>
+   .
+  </p>
+  <h3 id="samtools-sort">
+   samtools sort
+  </h3>
+  <p>
+   Samtools sort can use multiple threads with the -@ parameter. The following script requests the default queue, 1 node, 8 cores and 30 minutes. Because our input bam file is quite large, we will request a relatively large amount (24 Gb) of memory:
+  </p>
+  <pre><code class="bash">#PBS -q default
+#PBS -l nodes=1:ppn=8,walltime=00:30:00,mem=24gb,vmem=24gb
+#PBS -N samtools
+#PBS -V
+#PBS -o samtools_sort.out
+#PBS -e samtools_sort.err
+cd /LUSTRE/usuario/ruairidh/maize/
+module load samtools/1.3.1
+samtools sort -@ $PBS_NUM_PPN -T temp -o B73xPT_sorted.bam B73xPT.bam
+</code></pre>
+  <p>
+   In this example,
+   <code>
+    $PBS_NUM_PPN
+   </code>
+   equals 8, from
+   <code>
+    ppn=8
+   </code>
+   . Note that if you want to queue your job from one directory, but you want your input and output files in another directory, you can
+   <code>
+    cd
+   </code>
+   to that directory.
+  </p>
+  <h3 id="samtools-mpileup">
+   samtools mpileup
+  </h3>
+  <p>
+   As samtools mpileup
+   <strong>
+    does not use multiple threads
+   </strong>
+   , there is no point in requesting more than one node and one core. On the other hand, it requires some time to run:
+  </p>
+  <pre><code class="bash">#PBS -q default
+#PBS -l nodes=1:ppn=1,walltime=02:00:00,mem=4gb,vmem=4gb
+#PBS -N samtools
+#PBS -V
+#PBS -o samtools_mpileup.out
+#PBS -e samtools_mpileup.err
+cd /LUSTRE/usuario/ruairidh/maize/
+module load samtools/1.3.1
+samtools mpileup -g -Q 20 -q 30 -d 10000 -f ../B73_GeneModels_longest.fa -o PT_mpileup.bcf B73xPT_sorted_nodup.bam
+</code></pre>
+  <hr/>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
   <script>
