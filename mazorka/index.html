@@ -63,7 +63,7 @@
     </ul>
    </li>
    <li>
-    16 nodes (node1-16) with 20 cores and 64 Gb RAM:
+    16 nodes (node1 - node16) with 20 cores and 64 Gb RAM:
     <ul>
      <li>
       2 Intel(R) Xeon(R)
@@ -84,7 +84,7 @@
     </ul>
    </li>
    <li>
-    5 very high memory nodes (node17-21)  with 20 cores and 768 Gb RAM:
+    5 very high memory nodes (node17 - node21)  with 20 cores and 768 Gb RAM:
     <ul>
      <li>
       2 Intel(R) Xeon(R)
@@ -123,7 +123,7 @@
     </ul>
    </li>
    <li>
-    4 nodes (node22-23, 27, 29) with 8 cores and 48 Gb RAM:
+    4 nodes (node22, 23, 27, 29) with 8 cores and 48 Gb RAM:
     <ul>
      <li>
       2 Intel(R) Xeon(R)
@@ -219,7 +219,7 @@
    <code>
     /home/username/
    </code>
-   directory, located in the master node. These directories have a 1 Gb quota, which is enough disk space for a few scripts, small configuration files, some software etc. Large files (such as genomes, fastq files etc.) should be placed in the
+   directory, located in the master node. These directories have a 1 Gb quota, which is enough disk space for a few scripts, small configuration files, some software etc. Large files (such as genomes, fastq files, etc.) should be placed in the
    <a href="https://en.wikipedia.org/wiki/Lustre_(file_system)">
     LUSTRE distributed file system
    </a>
@@ -229,8 +229,15 @@
    </code>
    .
    <br/>
-   To copy data to your LUSTRE directory you can use scp or rsync. For example, in order to copy your local folder “data” to your LUSTRE folder “awesome_project” using rsync, the command line would be:
-   <br/>
+   To copy data to your LUSTRE directory you can use
+   <strong>
+    scp
+   </strong>
+   or
+   <strong>
+    rsync
+   </strong>
+   . For example, in order to copy your local folder “data” to your LUSTRE folder “awesome_project” using rsync, the command line would be:
    <code>
     rsync -av ./data/ username@10.10.10.240:/LUSTRE/usuario/username/awesome_project/
    </code>
@@ -273,9 +280,9 @@
     one (or more) command line(s)
    </li>
   </ul>
-  <h3 id="headers">
+  <h4 id="headers">
    Headers
-  </h3>
+  </h4>
   <p>
    PBS headers start with
    <code>
@@ -402,7 +409,7 @@
   <p>
    The amount of RAM is requested with:
    <code>
-    #PBS -l mem=memory,vmem=memory
+    #PBS -l mem=memory
    </code>
    where
    <code>
@@ -414,15 +421,37 @@
    </code>
    ) or Gb (for example
    <code>
-    16gb
+    12gb
    </code>
    ) your program(s) will need.
+  </p>
+  <p>
+   <strong>
+    Important note:
+   </strong>
+   mazorka does not enforce a maximum memory limit. Therefore you could ask for 100000gb of memory and your job will still be queued, but that does not mean that he job has 100000gb available. It means that 1) the job will die if it needs more than 100000gb and 2) that you only have as much memory as there is on the node.
+   <code>
+    mem=X
+   </code>
+   is used to avoid being assigned the default virtual (that is, physical + swap) memory amount, which is 2gb for
+   <code>
+    default
+   </code>
+   and 16gb for
+   <code>
+    ensam
+   </code>
+   . Therefore, if your job needs more than 64gb of memory you should use the
+   <code>
+    ensam
+   </code>
+   queue.
   </p>
   <h4 id="time">
    Time
   </h4>
   <p>
-   Time is requested with
+   Time required for the completion of the job is requested with
    <code>
     #PBS -l walltime=HH:MM:SS
    </code>
@@ -463,7 +492,7 @@
    <em>
     job_id
    </em>
-   in $PBS_O_WORKDIR. A different path name can be specified with
+   in $O_PBS_WORKDIR. A different path name can be specified with
    <code>
     #PBS -o /path/file_name
    </code>
@@ -549,7 +578,7 @@ cegma/2.5          Gblocks/0.91b      kraken/13-274      paleomix/1.2.5     rnam
    Deleting a job
   </h3>
   <p>
-   If for some reason a job needs to be cancelled, the
+   If, for some reason, a job needs to be cancelled, the
    <code>
     qdel
    </code>
@@ -615,7 +644,7 @@ bowtie2 -a -I 100 -X 600 --rdg 6,5 --rfg 6,5 --score-min L,-.6,-.4 --no-discorda
     <code>
      $PBS_O_WORKDIR
     </code>
-    variable, which means “the directory from which the script was qsubed”.
+    variable. this variable means “the directory from which the script was qsubed”.
    </li>
    <li>
     the
@@ -721,6 +750,139 @@ cd /LUSTRE/usuario/ruairidh/maize/
 module load samtools/1.3.1
 samtools mpileup -g -Q 20 -q 30 -d 10000 -f ../B73_GeneModels_longest.fa -o PT_mpileup.bcf B73xPT_sorted_nodup.bam
 </code></pre>
+  <h3 id="mrbayes-with-mpi-message-passing-interface">
+   MrBayes with MPI (Message Passing Interface)
+  </h3>
+  <p>
+   Running an MPI-enabled program is done through the
+   <strong>
+    mpirun
+   </strong>
+   executable, and each MPI instance needs to communicate with other MPI instances. As our program will run in one or more nodes, and in more than one core per node,
+   <strong>
+    mpirun needs to know
+   </strong>
+   :
+  </p>
+  <ul>
+   <li>
+    the
+    <strong>
+     list of actual nodes
+    </strong>
+    (hosts) that the scheduler assigned to our job: the
+    <code>
+     -hostfile
+    </code>
+    or
+    <code>
+     --hostfile
+    </code>
+    or
+    <code>
+     -machinefile
+    </code>
+    or
+    <code>
+     --machinefile
+    </code>
+    option.
+   </li>
+   <li>
+    how many processes it can launch, therefore the
+    <strong>
+     total number of cores
+    </strong>
+    that were assigned to our job: the
+    <code>
+     -c
+    </code>
+    or
+    <code>
+     -np
+    </code>
+    or
+    <code>
+     --np
+    </code>
+    option.
+   </li>
+  </ul>
+  <p>
+   This information is created at qsub and is stored in a file in /var/spool/torque/… that can be accesed as $PBS_NODEFILE.
+  </p>
+  <p>
+   <mathjax>
+    $PBS_NODEFILE is a text file that contains the names of the nodes that the scheduler gave us, and this name is repeated n times, where n is the ppn parameter. For example, if we ask for
+    <code>
+     nodes=1:ppn=8
+    </code>
+    and the scheduler gives us 8 cores in
+    <code>
+     node12
+    </code>
+    , then $
+   </mathjax>
+   PBS_NODEFILE is a text file with 8 lines, and each line says
+   <code>
+    node12
+   </code>
+   . If we ask for
+   <code>
+    nodes=2:ppn=20
+   </code>
+   and the scheduler gives us 20 cores in
+   <code>
+    node1
+   </code>
+   and 20 cores in
+   <code>
+    node2
+   </code>
+   , the file has 40 lines, 20 of which say
+   <code>
+    node1
+   </code>
+   and the other 20 say
+   <code>
+    node2
+   </code>
+   . Therefore,  if you
+   <strong>
+    count the number of lines
+   </strong>
+   in $PBS_NODE_FILE with
+   <code>
+    wc -l
+   </code>
+   you get the
+   <strong>
+    total number of cores
+   </strong>
+   available:
+  </p>
+  <pre><code class="bash">#PBS -N MrBayes
+#PBS -l nodes=1:ppn=8,walltime=100:00:00
+#PBS -V
+#PBS -q default
+cd /LUSTRE/usuario/nselem/TREES/PRIA
+
+module load mpirun/3.2
+module load mb/3.2.3
+
+NP=$(wc -l &lt; $PBS_NODEFILE)
+mpirun -machinefile $PBS_NODEFILE -np $NP mb PriHis.nxs &gt; PriAHisA.log
+or
+NO_OF_CORES=`cat $PBS_NODEFILE | wc -l`
+cat $PBS_NODEFILE &gt; nodes
+mpirun --hostfile nodes --np $NO_OF_CORES mb PriHis.nxs &gt; PriAHisA.log
+</code></pre>
+  <p>
+   <code>
+    mb PriHis.nxs &gt; PriAHisA.log
+   </code>
+   is the actual MrBayes command line.
+  </p>
   <hr/>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
