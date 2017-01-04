@@ -3,7 +3,7 @@
  <head>
   <meta charset="utf-8"/>
   <title>
-   A guide to mazorka
+   Made with Remarkable!
   </title>
   <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
   <style type="text/css">
@@ -14,9 +14,16 @@
   <h1 id="a-guide-to-mazorka">
    A guide to mazorka
   </h1>
-  <h2 id="what-is-mazorka">
+  <p>
+   This guide can be found online at
+   <a href="https://rchavez-langebio.github.io/mazorka/">
+    https://rchavez-langebio.github.io/mazorka/
+   </a>
+  </p>
+  <hr/>
+  <h3 id="what-is-mazorka">
    What is mazorka?
-  </h2>
+  </h3>
   <p>
    <strong>
     mazorka
@@ -24,9 +31,9 @@
    is the high-performance computing (HPC) cluster at Langebio.
   </p>
   <hr/>
-  <h2 id="background">
+  <h3 id="background">
    Background
-  </h2>
+  </h3>
   <p>
    <strong>
     mazorka
@@ -184,9 +191,9 @@
    </li>
   </ul>
   <hr/>
-  <h2 id="access-to-mazorka">
+  <h3 id="access-to-mazorka">
    Access to mazorka
-  </h2>
+  </h3>
   <p>
    Araceli Fernández is
    <strong>
@@ -323,6 +330,10 @@
     ensam
    </strong>
    queue only includes the high memory nodes:
+   <br/>
+   .
+   <br/>
+   .
   </p>
   <table>
    <thead>
@@ -429,7 +440,7 @@
    <strong>
     Important note:
    </strong>
-   mazorka does not enforce a maximum memory limit. Therefore you could ask for 100000gb of memory and your job would still be queued, but that does not mean that the job has 100000gb available. It means that 1) the job will die if it needs more than 100000gb and 2) that you only have as much memory as there is on the node.
+   mazorka does not enforce a maximum memory limit. Therefore you could ask for 100000gb of memory and your job will still be queued, but that does not mean that he job has 100000gb available. It means that 1) the job will die if it needs more than 100000gb and 2) that you only have as much memory as there is on the node.
    <code>
     mem=X
    </code>
@@ -492,7 +503,7 @@
    <em>
     job_id
    </em>
-   in $O_PBS_WORKDIR. A different path name can be specified with
+   in $PBS_O_WORKDIR. A different path name can be specified with
    <code>
     #PBS -o /path/file_name
    </code>
@@ -594,6 +605,10 @@ cegma/2.5          Gblocks/0.91b      kraken/13-274      paleomix/1.2.5     rnam
    <code>
     number.mazorka
    </code>
+   , for example:
+   <code>
+    121326.mazorka
+   </code>
    .
   </p>
   <hr/>
@@ -694,6 +709,8 @@ tblastn -num_threads $PBS_NUM_PPN -evalue 0.1 -db maize_cdna -query seqs.fasta -
     ppn=16
    </code>
    .
+   <br/>
+   .
   </p>
   <h3 id="samtools-sort">
    samtools sort
@@ -768,7 +785,7 @@ samtools mpileup -g -Q 20 -q 30 -d 10000 -f ../B73_GeneModels_longest.fa -o PT_m
    <li>
     the
     <strong>
-     list of actual nodes
+     name of the actual nodes
     </strong>
     (hosts) that the scheduler assigned to our job: the
     <code>
@@ -847,15 +864,15 @@ samtools mpileup -g -Q 20 -q 30 -d 10000 -f ../B73_GeneModels_longest.fa -o PT_m
    <code>
     node2
    </code>
-   . Therefore,  if you
+   . Therefore,
    <strong>
-    count the number of lines
+    counting the number of lines
    </strong>
-   in $PBS_NODEFILE with
+   in $PBS_NODE_FILE with
    <code>
     wc -l
    </code>
-   you get the
+   gives the
    <strong>
     total number of cores
    </strong>
@@ -870,9 +887,10 @@ cd /LUSTRE/usuario/nselem/TREES/PRIA
 module load mpirun/3.2
 module load mb/3.2.3
 
+# one possible syntax
 NP=$(wc -l &lt; $PBS_NODEFILE)
 mpirun -machinefile $PBS_NODEFILE -np $NP mb PriHis.nxs &gt; PriAHisA.log
-or
+# another possible syntax:
 NO_OF_CORES=`cat $PBS_NODEFILE | wc -l`
 cat $PBS_NODEFILE &gt; nodes
 mpirun --hostfile nodes --np $NO_OF_CORES mb PriHis.nxs &gt; PriAHisA.log
@@ -883,6 +901,27 @@ mpirun --hostfile nodes --np $NO_OF_CORES mb PriHis.nxs &gt; PriAHisA.log
    </code>
    is the actual MrBayes command line.
   </p>
+  <hr/>
+  <h3 id="trinity">
+   Trinity
+  </h3>
+  <p>
+   Genome and transcriptome assemblers require large amounts of RAM and should be queued to
+   <strong>
+    ensam
+   </strong>
+   :
+  </p>
+  <pre><code class="bash">#PBS -N Ensamblado
+#PBS -l nodes=1:ppn=8,vmem=250gb
+#PBS -q ensam
+#PBS -V
+cd /LUSTRE/usuario/msegovia/prueba-trinity/
+module load trinity/2.1.1
+Trinity --seqType fq --max_memory 250G --left SRMS1I_index9_1_final.txt --right
+SRMS001I_index9_2_final.txt --min_kmer_cov 2 --group_pairs_distance 999 --output
+i9trinity --CPU 8 &gt; result-pruebaunpairedi9
+</code></pre>
   <hr/>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
   </script>
